@@ -41,4 +41,8 @@ public class UserRn {
 		return dao.buscarPorId(id);
 	}
 
+	public void excluir(Long id) throws Exception {
+		dao.excluir(id);
+	}
+
 }

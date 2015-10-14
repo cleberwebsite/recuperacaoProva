@@ -8,14 +8,16 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+
 import br.senai.sc.ti2014n1.cleber.model.dominio.User;
 
 public class UserDao extends Dao {
 
 	private final String INSERT = "INSERT INTO user (nome, dosagem, intervalo, duracao) values (?,?,?,?)";
 	private final String SELECT = "SELECT * FROM user";
-	private final String SELECT_ID = "SELECT * FROM paciente WHERE id = ?";
-	private final String UPDATE = "UPDATE paciente SET nome = ?,  dosagem = ?, intervalo = ?, duracao = ? WHERE id = ?";
+	private final String SELECT_ID = "SELECT * FROM user WHERE id = ?";
+	private final String UPDATE = "UPDATE user SET nome = ?,  dosagem = ?, intervalo = ?, duracao = ? WHERE id = ?";
+	private final String DELETE = "DELETE FROM user WHERE id = ?";
 
 	public void salvar(User user) throws Exception {
 		if (user.getId() == 0) {
@@ -99,6 +101,18 @@ public class UserDao extends Dao {
 			System.out.println("Erro ao executar o update: " + e);
 		}
 
+	}
+	
+	public void excluir(Long id) throws Exception {
+		try {
+			PreparedStatement ps = getConnection().prepareStatement(DELETE);
+			ps.setLong(1, id);
+			ps.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+			System.out.println("Erro a executar o delete: " + e);
+			throw new Exception("Erro ao tentar excluir");
+		}
 	}
 
 }

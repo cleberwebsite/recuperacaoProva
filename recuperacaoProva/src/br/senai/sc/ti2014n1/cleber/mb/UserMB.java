@@ -52,5 +52,16 @@ public class UserMB {
 		user = rn.buscarPorId(id);
 		return "userform";
 	}
+	
+	public String excluir(String idParam){
+		Long id = Long.parseLong(idParam);
+		try {
+			rn.excluir(id);
+			usuarios = null;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return "";
+	}
 
 }
