@@ -46,5 +46,11 @@ public class UserMB {
 		}
 		return "userlist";
 	}
+	
+	public String editar(String idParam){
+		Long id = Long.parseLong(idParam);
+		user = rn.buscarPorId(id);
+		return "userform";
+	}
 
 }

@@ -8,7 +8,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-
 import br.senai.sc.ti2014n1.cleber.model.dominio.User;
 
 public class UserDao extends Dao {
@@ -16,10 +15,13 @@ public class UserDao extends Dao {
 	private final String INSERT = "INSERT INTO user (nome, dosagem, intervalo, duracao) values (?,?,?,?)";
 	private final String SELECT = "SELECT * FROM user";
 	private final String SELECT_ID = "SELECT * FROM paciente WHERE id = ?";
+	private final String UPDATE = "UPDATE paciente SET nome = ?,  dosagem = ?, intervalo = ?, duracao = ? WHERE id = ?";
 
 	public void salvar(User user) throws Exception {
 		if (user.getId() == 0) {
 			inserir(user);
+		}else {
+			alterar(user);
 		}
 	}
 
@@ -80,6 +82,23 @@ public class UserDao extends Dao {
 		}
 		return null;
 	}
+	
+	public void alterar(User user) {
+		try {
+			PreparedStatement ps = getConnection().prepareStatement(UPDATE);
+			ps.setString(1, user.getNome());
+			ps.setDouble(2, user.getDosagem());
+			ps.setString(3, user.getIntervalo());
+			ps.setString(4, user.getDuracao());
+			ps.setLong(5, user.getId());
 
+			ps.executeUpdate();
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+			System.out.println("Erro ao executar o update: " + e);
+		}
+
+	}
 
 }
