@@ -3,12 +3,19 @@ package br.senai.sc.ti2014n1.cleber.dao;
 import java.sql.PreparedStatement;
 
 
+
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+
 import br.senai.sc.ti2014n1.cleber.model.dominio.User;
 
 public class UserDao extends Dao {
 
 	private final String INSERT = "INSERT INTO user (nome, dosagem, intervalo, duracao) values (?,?,?,?)";
-	
+	private final String SELECT = "SELECT * FROM user";
+	private final String SELECT_ID = "SELECT * FROM paciente WHERE id = ?";
 
 	public void salvar(User user) throws Exception {
 		if (user.getId() == 0) {
@@ -32,6 +39,47 @@ public class UserDao extends Dao {
 		}
 	}
 
+	public List<User> listarTodos() {
+		List<User> users = new ArrayList<User>();
+		try {
+			PreparedStatement ps = getConnection().prepareStatement(SELECT);
+			ResultSet rs = ps.executeQuery();
+			while (rs.next()) {
+				User user = new User();
+				user.setNome(rs.getString("nome"));
+				user.setDosagem(rs.getDouble("dosagem"));
+				user.setIntervalo(rs.getString("intervalo"));
+				user.setDuracao(rs.getString("duracao"));
+				user.setId(rs.getLong("id"));
+				users.add(user);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+			System.out.println("Erro ao executar o select de paciente: " + e);
+		}
+		return users;
+	}
 	
+	public User buscarPorId(Long id) {
+		try {
+			PreparedStatement ps = getConnection().prepareStatement(SELECT_ID);
+			ps.setLong(1, id);
+			ResultSet rs = ps.executeQuery();
+			while (rs.next()) {
+				User user = new User();
+				user.setNome(rs.getString("nome"));
+				user.setDosagem(rs.getDouble("dosagem"));
+				user.setIntervalo(rs.getString("intervalo"));
+				user.setDuracao(rs.getString("duracao"));
+				user.setId(rs.getLong("id"));
+				return user;
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+			System.out.println("Erro ao executar o select de paciente: " + e);
+		}
+		return null;
+	}
+
 
 }

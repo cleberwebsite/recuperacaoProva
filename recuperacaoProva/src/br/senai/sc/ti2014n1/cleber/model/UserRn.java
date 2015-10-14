@@ -1,5 +1,7 @@
 package br.senai.sc.ti2014n1.cleber.model;
 
+import java.util.List;
+
 import br.senai.sc.ti2014n1.cleber.dao.UserDao;
 import br.senai.sc.ti2014n1.cleber.model.dominio.User;
 
@@ -29,6 +31,14 @@ public class UserRn {
 		}
 
 		dao.salvar(user);
+	}
+	
+	public List<User> listar() {
+		return dao.listarTodos();
+	}
+
+	public User buscarPorId(Long id) {
+		return dao.buscarPorId(id);
 	}
 
 }
